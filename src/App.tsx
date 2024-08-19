@@ -67,7 +67,6 @@ function App() {
   }
 
   const Ring = ({ ringId, ringData }) => {
-    // console.log('ring - ', ringId, ringData);
     return (
       <div 
         id={ringId}
@@ -81,7 +80,10 @@ function App() {
             let data = dataRef.current.find(param => param.param_id === paramId);
             return (
               <div 
-                className="ring-item"       
+                className={`ring-item ${!hierarchy[ringId].length ? 'popup' : ''}`} // don't animate if a param (hierarchy) from this ring has already been selected
+                style={{
+                  transform: `scale(${!hierarchy[ringId].length ? 0 : 1})`
+                }} 
                 onClick={() => handleClick(data, ringId)}
                 key={`${ringId}-${paramId}`}
               >
