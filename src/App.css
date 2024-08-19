@@ -1,0 +1,27 @@
+.app {
+  background-color: white;
+  height: 100%;
+}
+
+.ring-container {
+  padding: 50px;
+  border: solid 1px black;
+  position: relative;
+  height: 50%;
+}
+
+.ring {
+  margin-block: 10px;
+  display: flex;
+  gap: 10px;
+  background-color: white;
+  border: 1px solid red;
+  /* position: absolute; */
+}
+
+.ring-item {
+  cursor: pointer;
+  margin-inline: 10px;
+  border: 2px dashed red;
+}
+

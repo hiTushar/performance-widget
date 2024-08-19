@@ -1,0 +1,252 @@
+{
+    "scores": [
+        {
+            "param_id": "health",
+            "param_name": "Health Score",
+            "param_score": 0,
+            "scores": [
+                {
+                    "param_id": "energy1",
+                    "param_name": "Energy Score1",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet11",
+                            "param_name": "Internet Score11",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery11",
+                            "param_name": "Battery Score11",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating11",
+                            "param_name": "Overheating Score11",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                },
+                {
+                    "param_id": "memory1",
+                    "param_name": "Memory Score1",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet12",
+                            "param_name": "Internet Score12",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery12",
+                            "param_name": "Battery Score12",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating12",
+                            "param_name": "Overheating Score12",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                },
+                {
+                    "param_id": "connectivity1",
+                    "param_name": "Connectivity Score1",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet13",
+                            "param_name": "Internet Score13",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery13",
+                            "param_name": "Battery Score13",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating13",
+                            "param_name": "Overheating Score13",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "param_id": "usage",
+            "param_name": "Usage Score",
+            "param_score": 0,
+            "scores": [
+                {
+                    "param_id": "energy2",
+                    "param_name": "Energy Score2",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet21",
+                            "param_name": "Internet Score21",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery21",
+                            "param_name": "Battery Score21",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating21",
+                            "param_name": "Overheating Score21",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                },
+                {
+                    "param_id": "memory2",
+                    "param_name": "Memory Score2",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet22",
+                            "param_name": "Internet Score22",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery22",
+                            "param_name": "Battery Score22",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating22",
+                            "param_name": "Overheating Score22",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                },
+                {
+                    "param_id": "connectivity2",
+                    "param_name": "Connectivity Score2",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet23",
+                            "param_name": "Internet Score23",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery23",
+                            "param_name": "Battery Score23",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating23",
+                            "param_name": "Overheating Score23",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "param_id": "app_performance",
+            "param_name": "App Performance Score",
+            "param_score": 0,
+            "scores": [
+                {
+                    "param_id": "energy3",
+                    "param_name": "Energy Score3",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet31",
+                            "param_name": "Internet Score31",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery31",
+                            "param_name": "Battery Score31",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating31",
+                            "param_name": "Overheating Score31",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                },
+                {
+                    "param_id": "memory3",
+                    "param_name": "Memory Score3",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet32",
+                            "param_name": "Internet Score32",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery32",
+                            "param_name": "Battery Score32",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating32",
+                            "param_name": "Overheating Score32",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                },
+                {
+                    "param_id": "connectivity3",
+                    "param_name": "Connectivity Score3",
+                    "param_score": 0,
+                    "scores": [
+                        {
+                            "param_id": "internet33",
+                            "param_name": "Internet Score33",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "battery33",
+                            "param_name": "Battery Score33",
+                            "param_score": 0,
+                            "scores": []
+                        },
+                        {
+                            "param_id": "overheating33",
+                            "param_name": "Overheating Score33",
+                            "param_score": 0,
+                            "scores": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "teamspace": "string",
+    "timestamp": "2024-08-12T10:07:55.096Z"
+}
