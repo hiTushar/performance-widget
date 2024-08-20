@@ -4,6 +4,7 @@ import './App.css';
 import data2 from './data2.json';
 
 const MAX_RINGS = 3;
+const RING_HEIGHT = 100;
 
 function App() {
   const [hierarchy, setHierarchy] = useState<{ [key: string]: string }>({
@@ -12,11 +13,11 @@ function App() {
     ring2: ''
   })
 
-  const [ringData, setRingData] = useState<{ [key: string]: Array<string> }>({
-    ring0: [],
-    ring1: [],
-    ring2: []
-  });
+  // const [ringData, setRingData] = useState<{ [key: string]: Array<string> }>({
+  //   ring0: [],
+  //   ring1: [],
+  //   ring2: []
+  // });
 
   const ringDataRef = useRef({
     ring0: [],
@@ -66,6 +67,24 @@ function App() {
     })
   }
 
+  const getTopOffset = (ringId) => {
+    if(hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+      return `${(RING_HEIGHT * (+ringId.slice(-1) + 1))}px`;
+    }
+    if(!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+      return `${(RING_HEIGHT * (+ringId.slice(-1)))}px`;
+    }
+  }
+
+  const getRingAnimation = (ringId) => {
+    if(hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+      return '';
+    }
+    if(!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+      return 'slideIn 0.5s linear 0.5s 1 forwards';
+    }
+  }
+
   const Ring = ({ ringId, ringData }) => {
     return (
       <div 
@@ -73,6 +92,9 @@ function App() {
         className="ring"
         style={{
           zIndex: MAX_RINGS - +ringId.slice(-1),
+          top: getTopOffset(ringId),
+          animation: getRingAnimation(ringId), // instead of using a class toggle, applying animation directly inline
+          '--slide-in-offset': `${RING_HEIGHT}px`
         }} 
       >
         {

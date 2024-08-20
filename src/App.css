@@ -16,7 +16,16 @@
   gap: 10px;
   background-color: white;
   border: 1px solid red;
-  /* position: absolute; */
+  position: absolute;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(var(--slide-in-offset));
+  }
 }
 
 .ring-item {
@@ -25,7 +34,7 @@
   border: 2px dashed red;
 
   &.popup {
-    animation: popup 1s linear 1s 1 forwards;
+    animation: popup 1s linear 0.5s 1 forwards;
   } 
 }
 
