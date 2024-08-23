@@ -1,0 +1,73 @@
+.performance {
+    position: absolute;
+    transform: translateX(-50%);
+    aspect-ratio: 2/1;
+    max-width: 600px;
+    background-color: var(--bg-1);
+    background-image: radial-gradient(var(--gray-1) 7%, transparent 7%);
+    background-repeat: repeat;
+    container-name: performance-container;
+    container-type: inline-size;
+    /* overflow: hidden; */
+
+    @container app-container (min-width: 1px) {
+        background-size: 1.2cqw 1.2cqw;
+        top: 10cqw;
+        left: 50cqw;
+        width: 44cqw;
+    }
+}
+
+.performance__rings {
+    height: 100%;
+    @container performance-container (min-width: 1px) {
+        width: 100cqw;
+    }
+}
+
+@keyframes expand {
+    0% {
+        left: 50cqw;
+        transform: translateX(-50%);
+        aspect-ratio: 2/1;
+    }
+    100% {
+        left: 5cqw;
+        top: 5cqw;
+        transform: translateX(0%);
+        aspect-ratio: 0.72;
+    }
+}
+
+@keyframes collapse {
+    0% {
+        left: 5cqw;
+        top: 5cqw;
+        transform: translateX(0%);
+        aspect-ratio: 0.72;
+    }
+    100% {
+        left: 50%;
+        transform: translateX(-50%);
+        aspect-ratio: 2/1;
+    }
+}
+
+.performance__expand {
+    position: absolute;
+    cursor: pointer;
+    @container app-container (min-width: 1px) {
+        top: 1cqw;
+        right: 1cqw;
+    }
+}
+
+.perfomance__rings {
+    border: solid 1px black;
+    position: absolute;
+
+    @container app-container (min-width: 1px) {
+        height: 50cqw;
+        width: 100cqw;
+    }
+}
