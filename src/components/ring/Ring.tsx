@@ -1,19 +1,27 @@
 import './Ring.css';
-import { PerformanceData } from '../../types/Types';
-import { useMemo, useRef } from 'react';
+import { PerformanceData, RingInterface } from '../../types/Types';
+import { useEffect, useMemo, useRef } from 'react';
 import { inRadians } from '../../utils/Utils';
+import { get } from 'lodash';
 
 const MAX_RINGS = 3;
 const RING_BASE_POSITION = -120;
-const RING_GAP = 18;
+const RING_GAP = 25;
+const FIRST_RING_GAP = 36;
 const RING_WIDTH = 117;
 const RING_ITEM_SIZE = 6;
-const GAP_ANGLE = [40, 29.5, 23.5];
+const GAP_ANGLE = [30, 20.5, 15.7];
 const MAIN_ANGLE = 90;
 
-const Ring: React.FC<{ ringId: string, ringData: string[], hierarchy: { [key: regex]: string }, handleClick: (data: PerformanceData, ringId: string) => void, setExpand: (expand: boolean | null) => void, dataRef: React.MutableRefObject<PerformanceData[]>, ringDataRef: React.MutableRefObject<PerformanceData[][]> }> = ({ ringId, ringData, hierarchy, handleClick, setExpand, dataRef, ringDataRef }) => {
+const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClick, setExpand, dataRef, ringDataRef }) => {
     const ringRef = useRef<HTMLDivElement>(null);
     const rotationAngleRef = useRef<number>(0);
+
+    // useEffect(() => {
+    //     if(ringId !== 'ring0') {
+    //         // document.querySelector<HTMLElement>(`#${ringId}`)!.style.opacity = 0;
+    //     }
+    // }, [hierarchy]);
 
     const ringWidth = useMemo(() => {
         return RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP;
@@ -27,21 +35,56 @@ const Ring: React.FC<{ ringId: string, ringData: string[], hierarchy: { [key: re
     console.log(anglePosArray);
 
     const getTopOffset = (ringId: regex) => {
-        if (hierarchy[ringId].length && ringDataRef.current[ringId].length) {
-            return `${(RING_GAP * (+ringId.slice(-1) + 1)) + RING_BASE_POSITION - 2 * +ringId.slice(-1) * RING_GAP}cqw`;
+        let ringSizeIncrement = 2 * +ringId.slice(-1) * RING_GAP + RING_BASE_POSITION;
+        // if(!ringDataRef.current[ringId].length) { // empty rings
+        //     return `${RING_BASE_POSITION}cqw`;
+        // }
+        // else {
+        //     if (hierarchy[ringId].length) {
+        //         // return `${(RING_GAP * (+ringId.slice(-1) + 1)) + RING_BASE_POSITION - 2 * +ringId.slice(-1) * RING_GAP}cqw`;
+        //         return `${RING_BASE_POSITION + FIRST_RING_GAP}cqw`;
+        //     }
+        //     else {
+        //         // return `${(RING_GAP * (+ringId.slice(-1))) + RING_BASE_POSITION - 2 * +ringId.slice(-1) * RING_GAP}cqw`;
+        //         return `${RING_BASE_POSITION}cqw`;
+        //     }
+        // }
+        let totalOffset = 0;
+
+        let initialOffset = -(RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP);
+        totalOffset += initialOffset;
+
+        if(hierarchy[ringId].length) {
+            let hierarchySetOffset = FIRST_RING_GAP + RING_GAP * +ringId.slice(-1);
+            totalOffset += hierarchySetOffset;
         }
-        if (!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
-            return `${(RING_GAP * (+ringId.slice(-1))) + RING_BASE_POSITION - 2 * +ringId.slice(-1) * RING_GAP}cqw`;
+
+        if(!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+            let dataSetOffset = 0;
+            if(ringId !== 'ring0') {
+                dataSetOffset += FIRST_RING_GAP;
+                dataSetOffset += RING_GAP * (+ringId.slice(-1) - 1);
+            }
+            totalOffset += dataSetOffset;
+        }
+
+        return `${totalOffset}cqw`;
+    }
+
+    const getSlideInOffset = (ringId: regex) => {
+        if(ringId === 'ring0') {
+            return FIRST_RING_GAP;
+        }
+        else {
+            return RING_GAP;
         }
     }
 
     const getRingAnimation = (ringId: regex) => {
-        if (hierarchy[ringId].length && ringDataRef.current[ringId].length) {
-            return '';
-        }
         if (!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
             return 'slideIn 0.5s linear 0.5s 1 forwards';
         }
+        return '';
     }
 
     const getXPosition = (index, ringId) => {
@@ -56,6 +99,10 @@ const Ring: React.FC<{ ringId: string, ringData: string[], hierarchy: { [key: re
         return `${y - 0.5}cqw`;
     }
 
+    const getOpacity = (ringId: regex) => {
+        return ringData.length ? 1 : 0;
+    }
+
     const scoreClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: regex) => {
         let angle = e.currentTarget.dataset.angle;
         let centerAngle = MAIN_ANGLE;
@@ -68,12 +115,11 @@ const Ring: React.FC<{ ringId: string, ringData: string[], hierarchy: { [key: re
             id={ringId}
             className="ring"
             style={{
-                zIndex: MAX_RINGS - +ringId.slice(-1),
                 top: getTopOffset(ringId), // a static offset value when no animation is needed
                 animation: getRingAnimation(ringId), // instead of using a class toggle, applying animation directly inline
-                '--slide-in-offset': `${RING_GAP}cqw`,
+                '--slide-in-offset': `${getSlideInOffset(ringId)}cqw`,
                 width: `${ringWidth}cqw`,
-                opacity: ringData.length ? 1 : 0
+                opacity: getOpacity(ringId)
             }}
             ref={ringRef}
         >

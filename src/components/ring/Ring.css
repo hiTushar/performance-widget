@@ -1,25 +1,27 @@
 .ring {
-    margin-block: 10px;
+    /* margin-block: 10px; */
     border: 2px dashed red;
     border-radius: 50%;
     position: absolute;
     pointer-events: none;
-    transition: opacity 2s linear;
+    transition: opacity 2s ease-in;
     @container performance-container (min-width: 1px) {
         /* width: 117cqw; */
         aspect-ratio: 1;
-        left: 50cqw;
-        transform: translateX(-50%);
+        /* left: 50cqw; */
+        /* transform: translateX(-50%); */
     }
 }
 
 @keyframes slideIn {
     0% {
-        transform: translate(-50%, 0);
+        transform: translateY(0);
+        /* opacity: 0; */
     }
 
     100% {
-        transform: translate(-50%, var(--slide-in-offset));
+        transform: translateY(var(--slide-in-offset));
+        /* opacity: 1; */
     }
 }
 

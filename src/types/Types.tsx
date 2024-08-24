@@ -13,4 +13,15 @@ interface PerformanceScore {
     last_week_score: number;
 }
 
-export type { PerformanceData, PerformanceScore };
+interface RingInterface {
+    ringId: string, 
+    ringData: string[], 
+    hierarchy: { [key: regex]: string }, 
+    handleClick: (data: PerformanceData, ringId: string) => void, 
+    rotationAngle: number, 
+    setExpand: (expand: boolean | null) => void, 
+    dataRef: React.MutableRefObject<PerformanceData[]>, 
+    ringDataRef: React.MutableRefObject<PerformanceData[]> 
+}
+
+export type { PerformanceData, PerformanceScore, RingInterface };

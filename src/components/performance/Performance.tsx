@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import _ from "lodash";
+import _, { set } from "lodash";
 import './Performance.css'
 import { collapseSvg, expandSvg } from "../../assets/assets";
 import data2 from '../../api/dataBank/data2.json';
@@ -65,7 +65,21 @@ const Performance = () => {
     const expandWidget = (expandParam: boolean | null) => {
         // document.querySelector<HTMLElement>('.performance__expand')!.style.display = 'none';
         expandRef.current!.style.display = 'none';
-        setExpand(!expandParam);
+        if(expandParam) {
+            setHierarchy({
+                ring0: '',
+                ring1: '',
+                ring2: ''
+            });
+
+            let tempPrimary = _.filter(dataRef.current, { primary: true }).map(param => param.param_id);
+            ringDataRef.current = {
+                ring0: [...tempPrimary],
+                ring1: [],
+                ring2: []
+            };
+        }
+        setExpand(expandParam => !expandParam);
         // eventEmitter.emit('expand', !prev);
     }
 
