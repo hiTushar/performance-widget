@@ -4,12 +4,12 @@ import './Performance.css'
 import { collapseSvg, expandSvg } from "../../assets/assets";
 import data2 from '../../api/dataBank/data2.json';
 import Ring from "../ring/Ring";
-import { PerformanceData } from "../../types/Types";
+import { PerformanceData, RingId } from "../../types/Types";
 
 const MAX_RINGS = 3;
 
 const Performance = () => {
-    const [hierarchy, setHierarchy] = useState<{ [key: regex]: string }>({
+    const [hierarchy, setHierarchy] = useState<{ [key: RingId]: string }>({
         ring0: '',
         ring1: '',
         ring2: ''
@@ -17,7 +17,7 @@ const Performance = () => {
 
     const [expand, setExpand] = useState<boolean | null>(null);
 
-    const ringDataRef = useRef<{ [key: regex]: string[] }>({
+    const ringDataRef = useRef<{ [key: RingId]: string[] }>({
         ring0: [],
         ring1: [],
         ring2: []
@@ -30,7 +30,7 @@ const Performance = () => {
 
 
 
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: regex) => {
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => {
         console.log(e.currentTarget.dataset.angle);
         let hierarchyObj;
         if (expand !== true) {

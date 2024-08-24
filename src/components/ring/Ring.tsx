@@ -1,11 +1,8 @@
 import './Ring.css';
-import { PerformanceData, RingInterface } from '../../types/Types';
-import { useEffect, useMemo, useRef } from 'react';
+import { PerformanceData, RingId, RingInterface } from '../../types/Types';
+import { useMemo, useRef } from 'react';
 import { inRadians } from '../../utils/Utils';
-import { get } from 'lodash';
 
-const MAX_RINGS = 3;
-const RING_BASE_POSITION = -120;
 const RING_GAP = 25;
 const FIRST_RING_GAP = 36;
 const RING_WIDTH = 117;
@@ -28,7 +25,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     }, [hierarchy]);
     console.log(anglePosArray);
 
-    const getTopOffset = (ringId: regex) => {
+    const getTopOffset = (ringId: RingId) => {
         let totalOffset = 0;
 
         let initialOffset = -(RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP);
@@ -51,7 +48,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         return `${totalOffset}cqw`;
     }
 
-    const getSlideInOffset = (ringId: regex) => {
+    const getSlideInOffset = (ringId: RingId) => {
         if(ringId === 'ring0') {
             return FIRST_RING_GAP;
         }
@@ -60,26 +57,26 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         }
     }
 
-    const getRingAnimation = (ringId: regex) => {
+    const getRingAnimation = (ringId: RingId) => {
         if (!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
             return 'slideIn 0.5s linear 0.5s 1 forwards';
         }
         return '';
     }
 
-    const getXPosition = (index, ringId) => {
+    const getXPosition = (index) => {
         let theta = anglePosArray[index];
         let x = Math.cos(inRadians(theta)) * (ringWidth) / 2 + ringWidth / 2 - RING_ITEM_SIZE / 2;
-        return `${x - 2}cqw`;
+        return `${x - 3}cqw`;
     }
 
     const getYPosition = (index) => {
         let theta = anglePosArray[index];
         let y = Math.sin(inRadians(theta)) * (ringWidth) / 2 + ringWidth / 2 - RING_ITEM_SIZE / 2;
-        return `${y - 0.5}cqw`;
+        return `${y - 0.75}cqw`;
     }
 
-    const getOpacity = (ringId: regex) => {
+    const getOpacity = (ringId: RingId) => {
         let opacity = 1;
         if(ringId === 'ring0') {
             opacity = 1;
@@ -98,9 +95,10 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     }
 
     const scoreClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: regex) => {
-        let angle = e.currentTarget.dataset.angle;
-        let centerAngle = MAIN_ANGLE;
-        rotationAngleRef.current = centerAngle - +angle;
+        // let angle = e.currentTarget.dataset.angle;
+        // let centerAngle = MAIN_ANGLE;
+        // rotationAngleRef.current = centerAngle - +angle;
+        console.log(data);
         handleClick(e, data, ringId)
     }
 

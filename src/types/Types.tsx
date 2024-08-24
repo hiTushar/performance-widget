@@ -16,7 +16,7 @@ interface PerformanceScore {
 interface RingInterface {
     ringId: string, 
     ringData: string[], 
-    hierarchy: { [key: regex]: string }, 
+    hierarchy: { [key: RingId]: string }, 
     handleClick: (data: PerformanceData, ringId: string) => void, 
     rotationAngle: number, 
     setExpand: (expand: boolean | null) => void, 
@@ -24,4 +24,6 @@ interface RingInterface {
     ringDataRef: React.MutableRefObject<PerformanceData[]> 
 }
 
-export type { PerformanceData, PerformanceScore, RingInterface };
+type RingId = 'ring0' | 'ring1' | 'ring2';
+
+export type { PerformanceData, PerformanceScore, RingInterface, RingId };
