@@ -17,12 +17,6 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     const ringRef = useRef<HTMLDivElement>(null);
     const rotationAngleRef = useRef<number>(0);
 
-    // useEffect(() => {
-    //     if(ringId !== 'ring0') {
-    //         // document.querySelector<HTMLElement>(`#${ringId}`)!.style.opacity = 0;
-    //     }
-    // }, [hierarchy]);
-
     const ringWidth = useMemo(() => {
         return RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP;
     }, [ringId]);
@@ -35,20 +29,6 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     console.log(anglePosArray);
 
     const getTopOffset = (ringId: regex) => {
-        let ringSizeIncrement = 2 * +ringId.slice(-1) * RING_GAP + RING_BASE_POSITION;
-        // if(!ringDataRef.current[ringId].length) { // empty rings
-        //     return `${RING_BASE_POSITION}cqw`;
-        // }
-        // else {
-        //     if (hierarchy[ringId].length) {
-        //         // return `${(RING_GAP * (+ringId.slice(-1) + 1)) + RING_BASE_POSITION - 2 * +ringId.slice(-1) * RING_GAP}cqw`;
-        //         return `${RING_BASE_POSITION + FIRST_RING_GAP}cqw`;
-        //     }
-        //     else {
-        //         // return `${(RING_GAP * (+ringId.slice(-1))) + RING_BASE_POSITION - 2 * +ringId.slice(-1) * RING_GAP}cqw`;
-        //         return `${RING_BASE_POSITION}cqw`;
-        //     }
-        // }
         let totalOffset = 0;
 
         let initialOffset = -(RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP);
@@ -100,7 +80,21 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     }
 
     const getOpacity = (ringId: regex) => {
-        return ringData.length ? 1 : 0;
+        let opacity = 1;
+        if(ringId === 'ring0') {
+            opacity = 1;
+        }
+        else {
+            if(!ringDataRef.current[ringId].length) 
+                opacity = 0;
+            else {
+                if(!hierarchy[ringId].length) 
+                    opacity = 0;
+                else 
+                    opacity = 1;
+            }
+        }
+        return opacity;
     }
 
     const scoreClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: regex) => {
