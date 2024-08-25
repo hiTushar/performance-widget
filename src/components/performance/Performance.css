@@ -1,14 +1,13 @@
 .performance {
     position: absolute;
     transform: translateX(-50%);
-    max-width: 600px;
+    /* max-height: 668px; */
     background-color: var(--bg-1);
     background-image: radial-gradient(var(--gray-1) 7%, transparent 7%);
     background-repeat: repeat;
     container-name: performance-container;
     container-type: inline-size;
     overflow: hidden;
-    max-height: 668px;
 
     @container app-container (min-width: 1px) {
         background-size: 1.2cqw 1.2cqw;
@@ -16,15 +15,17 @@
         left: 50cqw;
         width: 44cqw;
         height: 22cqw;
+        border-radius: 0.2cqw;
     }
 }
 
 .performance__rings {
     height: 100%;
-    position: relative;
+    position: absolute;
+    z-index: 3;
     display: flex;
     justify-content: center;
-    
+
     @container performance-container (min-width: 1px) {
         width: 100cqw;
     }
@@ -36,13 +37,16 @@
         transform: translateX(-50%);
         width: 44cqw;
         height: 22cqw;
+        padding-top: 0cqw;
     }
+
     100% {
         left: 5cqw;
         top: 5cqw;
         transform: translateX(0%);
         width: 35cqw;
         height: 49cqw;
+        padding-top: 5cqw;
     }
 }
 
@@ -53,22 +57,26 @@
         transform: translateX(0%);
         width: 35cqw;
         height: 49cqw;
+        padding-top: 5cqw;
     }
+
     100% {
         left: 50%;
         transform: translateX(-50%);
         width: 44cqw;
         height: 22cqw;
+        padding-top: 0cqw;
     }
 }
 
 .performance__expand {
     position: absolute;
-    z-index: 1;
+    z-index: 5;
     cursor: pointer;
+
     @container app-container (min-width: 1px) {
-        top: 1cqw;
-        right: 1cqw;
+        top: 3cqw;
+        right: 3cqw;
     }
 }
 

@@ -1,9 +1,11 @@
 .ring {
-    border: 2px dashed red;
-    border-radius: 50%;
     position: absolute;
+    border: 1.5px solid var(--blue-1);
+    border-radius: 50%;
     pointer-events: none;
     aspect-ratio: 1;
+
+    background-color: var(--bg-2);
 }
 
 @keyframes slideIn {
@@ -28,13 +30,15 @@
 .ring-item {
     cursor: pointer;
     margin-inline: 10px;
-    border: 2px dashed red;
     border-radius: 50%;
     aspect-ratio: 1;
     position: absolute;
     transform: scale(var(--scale));
     /* transform-origin: center; */
     pointer-events: auto;
+    background-color: var(--item-color);
+    container-name: ring-item-container;
+    container-type: inline-size; 
 
     &.popup {
         animation: popup 1s linear 2s 1 forwards;
@@ -64,10 +68,10 @@
     text-align: center;
     font-weight: 300;
 
-    @container performance-container (min-width: 1px) {
-        font-size: 2cqw;
-        bottom: -3cqw;
-        width: calc(100cqw/6);
+    @container ring-item-container (min-width: 1px) {
+        font-size: 30cqw;
+        top: 120cqw;
+        width: 250cqw;
     }
 }
 
@@ -80,7 +84,7 @@
     color: var(--white);
     text-align: center;
 
-    @container performance-container (min-width: 1px) {
-        font-size: 2cqw;
+    @container ring-item-container (min-width: 1px) {
+        font-size: 30cqw;
     }
 }

@@ -3,11 +3,12 @@ import { PerformanceData, RingId, RingInterface } from '../../types/Types';
 import { useMemo, useRef } from 'react';
 import { inRadians } from '../../utils/Utils';
 
-const RING_GAP = 25;
-const FIRST_RING_GAP = 36;
+const MAX_RINGS = 3;
+const RING_GAP = 19;
+const FIRST_RING_GAP = 40;
 const RING_WIDTH = 117;
 const RING_ITEM_SIZE = 6;
-const GAP_ANGLE = [30, 20.5, 15.7];
+const GAP_ANGLE = [30, 22.5, 18];
 const MAIN_ANGLE = 90;
 
 const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClick, setExpand, dataRef, ringDataRef }) => {
@@ -23,7 +24,6 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         let anglePosArray = ringData.map((_, index) => MAIN_ANGLE - GAP_ANGLE[+ringId.slice(-1)] * (index - centerIndex));
         return anglePosArray;
     }, [hierarchy]);
-    console.log(anglePosArray);
 
     const getTopOffset = (ringId: RingId) => {
         let totalOffset = 0;
@@ -98,7 +98,6 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         // let angle = e.currentTarget.dataset.angle;
         // let centerAngle = MAIN_ANGLE;
         // rotationAngleRef.current = centerAngle - +angle;
-        console.log(data);
         handleClick(e, data, ringId)
     }
 
@@ -107,6 +106,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
             id={ringId}
             className="ring"
             style={{
+                zIndex: MAX_RINGS - +ringId.slice(-1),
                 top: getTopOffset(ringId), // a static offset value when no animation is needed
                 animation: getRingAnimation(ringId), // instead of using a class toggle, applying animation directly inline
                 '--slide-in-offset': `${getSlideInOffset(ringId)}cqw`,
@@ -116,8 +116,8 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
             ref={ringRef}
         >
             {
-                ringData.map((paramId: string, index: number) => {
-                    let data: PerformanceData = dataRef.current.find((param: PerformanceData) => param.param_id === paramId)!;
+                ringData.map((param_ring: { param_id: string, param_color: string }, index: number) => {
+                    let data: PerformanceData = dataRef.current.find((param: PerformanceData) => param.param_id === param_ring.param_id)!;
                     return (
                         <div
                             className={`ring-item ${!hierarchy[ringId].length ? 'popup' : ''}`} // don't animate if a param (hierarchy) from this ring has already been selected
@@ -125,10 +125,11 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
                                 '--scale': `${!hierarchy[ringId].length ? 0 : 1}`,
                                 // transform: `scale(${!hierarchy[ringId].length ? 0 : 1})`,
                                 left: getXPosition(index, ringId),
-                                top: getYPosition(index, ringId)
+                                top: getYPosition(index, ringId),
+                                '--item-color': param_ring.param_color
                             }}
                             onClick={(e) => scoreClick(e, data, ringId)}
-                            key={`${ringId}-${paramId}`}
+                            key={`${ringId}-${param_ring.param_id}`}
                             data-angle={anglePosArray[index]}
                         >
                             <div className="ring-item__name">{data.param_name}</div>

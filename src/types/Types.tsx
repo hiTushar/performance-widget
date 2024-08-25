@@ -24,6 +24,14 @@ interface RingInterface {
     ringDataRef: React.MutableRefObject<PerformanceData[]> 
 }
 
+interface ScoreRingInterface {
+    score: number, 
+    lastWeekScore: number, 
+    hierarchy: { [key: RingId]: string }, 
+    expand: boolean | null 
+}
+
+
 type RingId = 'ring0' | 'ring1' | 'ring2';
 
-export type { PerformanceData, PerformanceScore, RingInterface, RingId };
+export type { PerformanceData, PerformanceScore, RingInterface, RingId, ScoreRingInterface };
