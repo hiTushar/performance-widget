@@ -57,6 +57,6 @@
     @container data-status-container (min-width: 1px) {
         font-size: 2cqw;
     }
-    color: var(--gray-1);
+    color: var(--white);
     font-weight: 500;
 }

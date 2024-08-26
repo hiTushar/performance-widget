@@ -39,17 +39,17 @@ const Performance = () => {
     useEffect(() => {
         if (data.components.length === 0) {
             dataStatus.current = 'LOADING';
-            ApiManager.getPerformanceData().then((data: ApiData) => {
-                if (data.components.length === 0) {
-                    setData(data);
+            ApiManager.getPerformanceData().then((res: ApiData) => {
+                if (res.components.length === 0 || Object.keys(res).length === 0) {
+                    setData(res);
                     dataStatus.current = 'EMPTY';
                 }
                 else {
-                    setData(data);
+                    setData(res);
                     dataStatus.current = 'OK';
                 }
             }).catch(() => {
-                setData(data)
+                setData({ components: [], score: 0, last_week_score: 0 })
                 dataStatus.current = 'ERROR';
             });
         }
