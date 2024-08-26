@@ -1,16 +1,18 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import _ from "lodash";
 import './Performance.css'
 import { collapseSvg, expandSvg } from "../../assets/assets";
 import data2 from '../../api/dataBank/data2.json';
 import Ring from "../ring/Ring";
-import { PerformanceData, RingId } from "../../types/Types";
+import { ApiData, DataStatusType, HierarchyInterface, PerformanceData, RingDataRef, RingId } from "../../types/Types";
 import ScoreRing from "../scoreRing/ScoreRing";
+import ApiManager from "../../api/ApiManager";
+import DataStatusScreen from "../dataStatus/DataStatus";
 
 const MAX_RINGS = 3;
 
 const Performance = () => {
-    const [hierarchy, setHierarchy] = useState<{ [key: RingId]: string }>({
+    const [hierarchy, setHierarchy] = useState<HierarchyInterface>({
         ring0: '',
         ring1: '',
         ring2: ''
@@ -18,22 +20,44 @@ const Performance = () => {
 
     const [expand, setExpand] = useState<boolean | null>(null);
 
-    const ringDataRef = useRef<{ [key: RingId]: Array<{ param_id: String, param_color: String }> }>({
+    const ringDataRef = useRef<RingDataRef>({
         ring0: [],
         ring1: [],
         ring2: []
     });
 
-    const dataRef = useRef(data2.components);
+    const dataStatus = useRef<DataStatusType>('LOADING');
+    const [data, setData] = useState<ApiData>({ components: [], score: 0, last_week_score: 0 });
+
+    // const dataRef = useRef(data2.components);
     const scoreRef = useRef({ score: data2.score, last_week_score: data2.last_week_score });
 
     const expandRef = useRef<HTMLDivElement>(null);
 
-    const [openPanel, setOpenPanel] = useState(false);
+    // const [openPanel, setOpenPanel] = useState(false);
 
+    useEffect(() => {
+        if (data.components.length === 0) {
+            dataStatus.current = 'LOADING';
+            ApiManager.getPerformanceData().then((data: ApiData) => {
+                if (data.components.length === 0) {
+                    setData(data);
+                    dataStatus.current = 'EMPTY';
+                }
+                else {
+                    setData(data);
+                    dataStatus.current = 'OK';
+                }
+            }).catch(() => {
+                setData(data)
+                dataStatus.current = 'ERROR';
+            });
+        }
+    }, [])
 
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => {
+        console.log(e);
         let hierarchyObj;
         if (expand !== true) {
             setExpand(true);
@@ -43,7 +67,7 @@ const Performance = () => {
                 hierarchyObj = { ...prev };
                 hierarchyObj[ringId] = data.param_id;
                 for (let i = +ringId.slice(-1) + 1; i < MAX_RINGS; i++) {
-                    hierarchyObj[`ring${i}`] = '';
+                    hierarchyObj[`ring${i}` as RingId] = '';
                 }
                 return hierarchyObj;
             })
@@ -87,7 +111,7 @@ const Performance = () => {
     }
 
     if (!hierarchy.ring0) {
-        let tempPrimary = _.filter(dataRef.current, { primary: true }).map((param, idx) => ({ 'param_id': param.param_id, 'param_color': `var(--item-${idx + 1})` }));
+        let tempPrimary = _.filter(data.components, { primary: true }).map((param, idx) => ({ 'param_id': param.param_id, 'param_color': `var(--item-${idx + 1})` }));
         ringDataRef.current = {
             ring0: [...tempPrimary],
             ring1: [],
@@ -95,15 +119,15 @@ const Performance = () => {
         };
     }
     else {
-        let newObj: { [key: string]: Array<{ param_id: String, param_color: String }> } = { ...ringDataRef.current };
+        let newObj = { ...ringDataRef.current };
         for (let i = 0; i < MAX_RINGS; i++) {
             if (i !== MAX_RINGS - 1) {
-                let tempSecondary = _.filter(dataRef.current, { param_id: hierarchy[`ring${i}`] })[0]?.children;
+                let tempSecondary = _.filter(data.components, { param_id: hierarchy[`ring${i}` as RingId] })[0]?.children;
                 if (tempSecondary) {
-                    newObj[`ring${i + 1}`] = tempSecondary.map((paramId, idx) => ({ 'param_id': paramId, 'param_color': `var(--item-${idx + 1})` }));
+                    newObj[`ring${i + 1}` as RingId] = tempSecondary.map((paramId, idx) => ({ 'param_id': paramId, 'param_color': `var(--item-${idx + 1})` }));
                 }
                 else {
-                    newObj[`ring${i + 1}`] = [];
+                    newObj[`ring${i + 1}` as RingId] = [];
                 }
             }
             ringDataRef.current = { ...newObj };
@@ -111,42 +135,45 @@ const Performance = () => {
     }
 
     return (
-        <div
-            className='performance'
-            style={{
-                animation: getAnimation(expand)
-            }}
-            onAnimationEnd={() => expandRef.current!.style.display = 'block'}
-        >
-            <div ref={expandRef} className='performance__expand' onClick={() => expandWidget(expand)}>
-                {
-                    expand ? <img src={collapseSvg} alt='collapse' /> : <img src={expandSvg} alt='expand' />
-                }
+        dataStatus.current !== 'OK' ? (
+            <DataStatusScreen status={dataStatus.current} />
+        ) : (
+            <div
+                className='performance'
+                style={{
+                    animation: getAnimation(expand)
+                }}
+                onAnimationEnd={() => expandRef.current!.style.display = 'block'}
+            >
+                <div ref={expandRef} className='performance__expand' onClick={() => expandWidget(expand)}>
+                    {
+                        expand ? <img src={collapseSvg} alt='collapse' /> : <img src={expandSvg} alt='expand' />
+                    }
+                </div>
+                <div className='performance__rings'>
+                    <ScoreRing
+                        score={scoreRef.current.score}
+                        lastWeekScore={scoreRef.current.last_week_score}
+                        hierarchy={hierarchy}
+                        expand={expand}
+                    />
+                    {
+                        Object.keys(ringDataRef.current).map((ringId) => (
+                            <Ring
+                                ringId={ringId as RingId}
+                                ringData={ringDataRef.current[ringId as RingId]}
+                                hierarchy={hierarchy}
+                                handleClick={handleClick}
+                                apiData={data.components}
+                                ringDataRef={ringDataRef}
+                                key={ringId}
+                            />
+                        ))
+                    }
+                </div>
+                <div className='performance__inspect'></div>
             </div>
-            <div className='performance__rings'>
-                <ScoreRing
-                    score={scoreRef.current.score}
-                    lastWeekScore={scoreRef.current.last_week_score}
-                    hierarchy={hierarchy}
-                    expand={expand}
-                />
-                {
-                    Object.keys(ringDataRef.current).map(ringId => (
-                        <Ring
-                            ringId={ringId}
-                            ringData={ringDataRef.current[ringId]}
-                            hierarchy={hierarchy}
-                            handleClick={handleClick}
-                            setExpand={setExpand}
-                            dataRef={dataRef}
-                            ringDataRef={ringDataRef}
-                            key={ringId}
-                        />
-                    ))
-                }
-            </div>
-            <div className='performance__inspect'></div>
-        </div>
+        )
     )
 }
 

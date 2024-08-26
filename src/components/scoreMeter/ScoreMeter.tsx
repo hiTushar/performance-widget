@@ -49,7 +49,7 @@ const ScoreMeter = (props: { score: number }) => {
                 className="score-meter__val"
                 style={{
                     '--score-color': getColor(score)
-                }}
+                } as React.CSSProperties}
             >
                 {score}
                 <span>%</span>

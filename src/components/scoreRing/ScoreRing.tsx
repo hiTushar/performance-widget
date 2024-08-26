@@ -1,4 +1,4 @@
-import { RingId, ScoreRingInterface } from '../../types/Types';
+import { ScoreRingInterface } from '../../types/Types';
 import './ScoreRing.css';
 import { infoSvg } from '../../assets/assets';
 import ScoreMeter from '../scoreMeter/ScoreMeter';
@@ -87,7 +87,7 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
                 '--slide-in-score-ring-offset': getSlideInOffset(),
                 '--slide-in-extra': getSlideInExtraOffset(),
                 '--score-ring-width': `${SCORE_RING_WIDTH}cqw`
-            }}
+            } as React.CSSProperties}
         >
             <div className='score-ring-dotted-bg'></div>
             <div className='score-ring__info'>
@@ -105,7 +105,7 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
                         className='previous__diff'
                         style={{
                             '--prev-color': getPreviousDiffColor()
-                        }}
+                        } as React.CSSProperties}
                     >
                         {getPreviousDiff()}
                     </div>
