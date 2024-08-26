@@ -2,6 +2,7 @@ import './Ring.css';
 import { PerformanceData, RingId, RingInterface } from '../../types/Types';
 import { useMemo, useRef } from 'react';
 import { inRadians } from '../../utils/Utils';
+import _ from 'lodash';
 
 const MAX_RINGS = 3;
 const RING_GAP = 19;
@@ -22,6 +23,13 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     const anglePosArray = useMemo(() => {
         let centerIndex = Math.floor(ringData.length / 2);
         let anglePosArray = ringData.map((_, index) => MAIN_ANGLE - GAP_ANGLE[+ringId.slice(-1)] * (index - centerIndex));
+        if (hierarchy[ringId].length) {
+            let selectedScoreIndex = _.findIndex(ringData, (param) => param.param_id === hierarchy[ringId]);
+
+            let temp = anglePosArray[centerIndex];
+            anglePosArray[centerIndex] = anglePosArray[selectedScoreIndex];
+            anglePosArray[selectedScoreIndex] = temp;
+        }
         return anglePosArray;
     }, [hierarchy]);
 
@@ -31,14 +39,14 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         let initialOffset = -(RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP);
         totalOffset += initialOffset;
 
-        if(hierarchy[ringId].length) {
+        if (hierarchy[ringId].length) {
             let hierarchySetOffset = FIRST_RING_GAP + RING_GAP * +ringId.slice(-1);
             totalOffset += hierarchySetOffset;
         }
 
-        if(!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+        if (!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
             let dataSetOffset = 0;
-            if(ringId !== 'ring0') {
+            if (ringId !== 'ring0') {
                 dataSetOffset += FIRST_RING_GAP;
                 dataSetOffset += RING_GAP * (+ringId.slice(-1) - 1);
             }
@@ -49,7 +57,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     }
 
     const getSlideInOffset = (ringId: RingId) => {
-        if(ringId === 'ring0') {
+        if (ringId === 'ring0') {
             return FIRST_RING_GAP;
         }
         else {
@@ -78,16 +86,16 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
 
     const getOpacity = (ringId: RingId) => {
         let opacity = 1;
-        if(ringId === 'ring0') {
+        if (ringId === 'ring0') {
             opacity = 1;
         }
         else {
-            if(!ringDataRef.current[ringId].length) 
+            if (!ringDataRef.current[ringId].length)
                 opacity = 0;
             else {
-                if(!hierarchy[ringId].length) 
+                if (!hierarchy[ringId].length)
                     opacity = 0;
-                else 
+                else
                     opacity = 1;
             }
         }
@@ -101,6 +109,41 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         handleClick(e, data, ringId)
     }
 
+    const getItemAnimation = (paramId: string, selectedParamId: string) => {
+        if (!selectedParamId) return '';
+
+        if (paramId === selectedParamId) {
+            return 'selected 1s linear 0s 1 forwards';
+        }
+        else {
+            return 'notSelected 1s linear 0s 1 forwards';
+        }
+    }
+
+    const getBorderColor = (hierarchy, ringId, ringData) => {
+        if (hierarchy[ringId]) {
+            let selectedParamColor = _.filter(ringData, { param_id: hierarchy[ringId] })[0].param_color.replace(')', '-mild)');
+            return selectedParamColor;
+        }
+        else {
+            return 'var(--blue-1)';
+        }
+    }
+
+    const getTextColor = (hierarchy, ringId, paramId) => {
+        if (hierarchy[ringId]) {
+            if (paramId === hierarchy[ringId]) {
+                return 'var(--white)';
+            }
+            else {
+                return 'var(--gray-2)';
+            }
+        }
+        else {
+            return 'var(--white)';
+        }
+    }
+
     return (
         <div
             id={ringId}
@@ -111,7 +154,8 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
                 animation: getRingAnimation(ringId), // instead of using a class toggle, applying animation directly inline
                 '--slide-in-offset': `${getSlideInOffset(ringId)}cqw`,
                 width: `${ringWidth}cqw`,
-                opacity: getOpacity(ringId)
+                opacity: getOpacity(ringId),
+                borderColor: getBorderColor(hierarchy, ringId, ringData)
             }}
             ref={ringRef}
         >
@@ -126,14 +170,29 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
                                 // transform: `scale(${!hierarchy[ringId].length ? 0 : 1})`,
                                 left: getXPosition(index, ringId),
                                 top: getYPosition(index, ringId),
-                                '--item-color': param_ring.param_color
+                                '--item-color': param_ring.param_color,
+                                animation: getItemAnimation(param_ring.param_id, hierarchy[ringId])
                             }}
                             onClick={(e) => scoreClick(e, data, ringId)}
                             key={`${ringId}-${param_ring.param_id}`}
                             data-angle={anglePosArray[index]}
                         >
-                            <div className="ring-item__name">{data.param_name}</div>
-                            <div className="ring-item__score">{data.param_score}</div>
+                            <div
+                                className="ring-item__score"
+                                style={{
+                                    color: getTextColor(hierarchy, ringId, data.param_id)
+                                }}
+                            >
+                                {data.param_score}
+                            </div>
+                            <div
+                                className="ring-item__name"
+                                style={{
+                                    color: getTextColor(hierarchy, ringId, data.param_id)
+                                }}
+                            >
+                                {data.param_name}
+                            </div>
                         </div>
                     )
                 })

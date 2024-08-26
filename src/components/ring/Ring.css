@@ -4,7 +4,7 @@
     border-radius: 50%;
     pointer-events: none;
     aspect-ratio: 1;
-
+    transition: border-color 1s linear;
     background-color: var(--bg-2);
 }
 
@@ -22,6 +22,7 @@
 
 .ring-performance-score {
     border-radius: 50%;
+
     @container performance-container (min-width: 1px) {
         width: 82cqw;
     }
@@ -38,10 +39,10 @@
     pointer-events: auto;
     background-color: var(--item-color);
     container-name: ring-item-container;
-    container-type: inline-size; 
+    container-type: inline-size;
 
     &.popup {
-        animation: popup 1s linear 2s 1 forwards;
+        animation: popup 1s linear 1.5s 1 forwards;
     }
 
     @container performance-container (min-width: 1px) {
@@ -59,19 +60,68 @@
     }
 }
 
+@keyframes selected {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: var(--bg-2);
+        border: calc(1cqw/6) solid var(--item-color);
+    }
+}
+
+@keyframes notSelected {
+    0% {
+        /* border: 1.5px solid var(--item-color); */
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: var(--bg-2);
+        border: calc(1cqw/6) solid var(--gray-1);
+    }
+}
+
 .ring-item__name {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    
+
     color: var(--white);
     text-align: center;
     font-weight: 300;
+    opacity: 0;
+    animation: slideInName 1s linear 3s 1 forwards;
 
     @container ring-item-container (min-width: 1px) {
-        font-size: 30cqw;
+        font-size: 35cqw;
+        top: 200cqw;
+        width: 280cqw;
+    }
+}
+
+@keyframes slideInName {
+    0% {
+        opacity: 0;
+        top: 200cqw;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
         top: 120cqw;
-        width: 250cqw;
     }
 }
 
