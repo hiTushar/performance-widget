@@ -24,18 +24,18 @@ const ScoreMeter = (props: { score: number }) => {
 
         >
             <div className='score-meter__arc'>
-                <svg width="100cqw" height="50cqw" viewBox="0 0 100 50" preserveAspectRatio="none">
+                <svg width="100cqw" height="50cqw" viewBox="0 -3.5 100 50" preserveAspectRatio="none">
                     <path
-                        d='M 2 50
-                        A 30 30, 0, 0, 1, 98 50'
+                        d='M 3 46
+                        A 2 2, 0, 0, 1, 97 46'
                         fill="none"
                         stroke='var(--gray-1)'
                         strokeWidth='4cqw'
                         strokeLinecap="round"
                     />
                     <path
-                        d='M 2 50
-                        A 30 30, 0, 0, 1, 98 50'
+                        d='M 3 46
+                        A 2 2, 0, 0, 1, 97 46'
                         fill="none"
                         stroke={getColor(score)}
                         strokeWidth='4cqw'
