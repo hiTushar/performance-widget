@@ -123,13 +123,13 @@ const Performance = () => {
                     expand ? <img src={collapseSvg} alt='collapse' /> : <img src={expandSvg} alt='expand' />
                 }
             </div>
-            <ScoreRing
-                score={scoreRef.current.score}
-                lastWeekScore={scoreRef.current.last_week_score}
-                hierarchy={hierarchy}
-                expand={expand}
-            />
             <div className='performance__rings'>
+                <ScoreRing
+                    score={scoreRef.current.score}
+                    lastWeekScore={scoreRef.current.last_week_score}
+                    hierarchy={hierarchy}
+                    expand={expand}
+                />
                 {
                     Object.keys(ringDataRef.current).map(ringId => (
                         <Ring

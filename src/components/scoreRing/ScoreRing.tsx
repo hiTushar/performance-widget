@@ -32,7 +32,7 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
             return 'slideInScoreRing 0.5s linear 0.5s 1 forwards';
         }
         else if(expand) {
-            return 'slideInExtra 0.5s linear 0.5s 1 forwards';
+            // return 'slideInExtra 0.5s linear 0.5s 1 forwards';
         }
         return '';
     }
