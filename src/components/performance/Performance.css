@@ -82,7 +82,7 @@
 }
 
 .perfomance__rings {
-    border: solid 1px black;
+    /* border: solid 1px black; */
     position: absolute;
 
     @container app-container (min-width: 1px) {

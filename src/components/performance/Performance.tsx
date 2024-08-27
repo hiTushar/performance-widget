@@ -156,6 +156,26 @@ const Performance = () => {
                     }
                 }}
             >
+                <div style={{
+                    position: 'absolute',
+                    zIndex: 10,
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    pointerEvents: 'none'
+                }}>
+                    <div style={{
+                        border: 'solid 1px yellow',
+                        flex: 1
+                    }}></div>
+                    <div style={{
+                        border: 'solid 1px yellow',
+                        flex: 1
+                    }}></div>
+                </div>
                 <div ref={expandRef} className='performance__expand' onClick={() => expandWidget(expand)}>
                     {
                         expand ? <img src={collapseSvg} alt='collapse' /> : <img src={expandSvg} alt='expand' />
