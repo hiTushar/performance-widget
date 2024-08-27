@@ -1,9 +1,10 @@
 .widget-app {
-  background-color: gray;
+  background-color: none;
   height: 100%;
   width: 100%;
   position: absolute;
   z-index: 10;
   container-name: app-container;
   container-type: inline-size;
+  pointer-events: none;
 }

@@ -33,7 +33,7 @@
     }
 }
 
-@keyframes slideInExtra {
+/* @keyframes slideInExtra {
     0% {
         transform: translate(-50%, var(--slide-in-score-ring-offset));
 
@@ -44,7 +44,7 @@
         opacity: 1;
     }
 
-}
+} */
 
 .score-ring__info {
     position: absolute;

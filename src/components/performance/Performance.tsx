@@ -8,6 +8,8 @@ import { ApiData, DataStatusType, HierarchyInterface, PerformanceData, RingDataR
 import ScoreRing from "../scoreRing/ScoreRing";
 import ApiManager from "../../api/ApiManager";
 import DataStatusScreen from "../dataStatus/DataStatus";
+import { useDispatch } from "react-redux";
+import { toggleModal } from "../../redux/actions/modalAction";
 
 const MAX_RINGS = 3;
 
@@ -34,6 +36,7 @@ const Performance = () => {
 
     const expandRef = useRef<HTMLDivElement>(null);
 
+    const dispatch = useDispatch();
     // const [openPanel, setOpenPanel] = useState(false);
 
     useEffect(() => {
@@ -92,6 +95,9 @@ const Performance = () => {
         // document.querySelector<HTMLElement>('.performance__expand')!.style.display = 'none';
         expandRef.current!.style.display = 'none';
 
+        let event = new CustomEvent('expand', { detail: { expand: !expandParam } });
+        document.dispatchEvent(event);
+
         if (expandParam) {
             setHierarchy({
                 ring0: '',
@@ -143,7 +149,12 @@ const Performance = () => {
                 style={{
                     animation: getAnimation(expand)
                 }}
-                onAnimationEnd={() => expandRef.current!.style.display = 'block'}
+                onAnimationEnd={() => {
+                    expandRef.current!.style.display = 'block'
+                    if(expand) {
+                        document.querySelector<HTMLElement>('.performance__modal-button')!.style.display = 'block';
+                    }
+                }}
             >
                 <div ref={expandRef} className='performance__expand' onClick={() => expandWidget(expand)}>
                     {
@@ -155,7 +166,6 @@ const Performance = () => {
                         score={scoreRef.current.score}
                         lastWeekScore={scoreRef.current.last_week_score}
                         hierarchy={hierarchy}
-                        expand={expand}
                     />
                     {
                         Object.keys(ringDataRef.current).map((ringId) => (
@@ -172,6 +182,16 @@ const Performance = () => {
                     }
                 </div>
                 <div className='performance__inspect'></div>
+                {
+                    expand && (
+                        <div 
+                            className='performance__modal-button'
+                            onClick={() => dispatch(toggleModal(true))}
+                        >
+                            How is this scored?
+                        </div>
+                    )
+                }
             </div>
         )
     )

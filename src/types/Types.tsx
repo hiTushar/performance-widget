@@ -25,8 +25,7 @@ interface RingInterface {
 interface ScoreRingInterface {
     score: number, 
     lastWeekScore: number, 
-    hierarchy: { [key in RingId]: string }, 
-    expand: boolean | null 
+    hierarchy: { [key in RingId]: string }
 }
 
 type RingId = 'ring0' | 'ring1' | 'ring2';

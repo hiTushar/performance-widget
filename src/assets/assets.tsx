@@ -4,6 +4,7 @@ import infoSvg from './info.svg';
 import emblemSvg from './emblem.svg';
 import error from './error.png';
 import noData from './noData.png';
+import cancelSvg from './cancel.svg';
 
 export {
   expandSvg,
@@ -11,5 +12,6 @@ export {
   infoSvg,
   emblemSvg,
   error,
-  noData
+  noData,
+  cancelSvg
 };

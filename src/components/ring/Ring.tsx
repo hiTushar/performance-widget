@@ -37,7 +37,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         return anglePosArray;
     }, [hierarchy]);
 
-    console.log(anglePosArray);
+    // console.log(anglePosArray);
 
     const getTopOffset = (ringId: RingId) => {
         let totalOffset = 0;
@@ -150,6 +150,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         }
     }
 
+    console.log({ ringId, ringData, hierarchy, ringDataRef });
     return (
         <div
             id={ringId}

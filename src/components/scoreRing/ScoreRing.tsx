@@ -7,8 +7,8 @@ const SCORE_RING_WIDTH = 95;
 const SLIDE_IN_SCORE_RING_OFFSET = 28;
 
 
-const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekScore, expand }) => {
-    console.log(expand);
+const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekScore }) => {
+    // console.log({hierarchy, expand});
     const getTopOffset = () => {
         let totalOffset = 0;
 
@@ -31,9 +31,9 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
         if(!hierarchy.ring0.length) {
             return 'slideInScoreRing 0.5s linear 0.5s 1 forwards';
         }
-        else if(expand) {
-            // return 'slideInExtra 0.5s linear 0.5s 1 forwards';
-        }
+        // else if(expand) {
+        //     return 'slideInExtra 0.5s linear 0.5s 1 forwards';
+        // }
         return '';
     }
 
@@ -47,14 +47,14 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
         return `${totalOffset}cqw`;
     }
 
-    const getSlideInExtraOffset = () => {
-        let totalOffset = 0;
-        totalOffset += SLIDE_IN_SCORE_RING_OFFSET;
-        if(expand) {
-            totalOffset += 10;
-        }
-        return `${totalOffset}cqw`;
-    }
+    // const getSlideInExtraOffset = () => {
+    //     let totalOffset = 0;
+    //     totalOffset += SLIDE_IN_SCORE_RING_OFFSET;
+    //     if(expand) {
+    //         totalOffset += 10;
+    //     }
+    //     return `${totalOffset}cqw`;
+    // }
     
     const getPreviousDiff = () => {
         let diff = score - lastWeekScore;
@@ -85,7 +85,7 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
                 top: getTopOffset(),
                 animation: getAnimation(),
                 '--slide-in-score-ring-offset': getSlideInOffset(),
-                '--slide-in-extra': getSlideInExtraOffset(),
+                // '--slide-in-extra': getSlideInExtraOffset(),
                 '--score-ring-width': `${SCORE_RING_WIDTH}cqw`
             } as React.CSSProperties}
         >
