@@ -18,8 +18,7 @@ interface RingInterface {
     ringData: Array<RingParamUI>,
     hierarchy: { [key in RingId]: string }, 
     handleClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => void,
-    apiData: PerformanceData[], 
-    ringDataRef: React.MutableRefObject<RingDataRef> 
+    apiData: PerformanceData[] 
 }
 
 interface ScoreRingInterface {

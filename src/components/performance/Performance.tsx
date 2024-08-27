@@ -175,7 +175,6 @@ const Performance = () => {
                                 hierarchy={hierarchy}
                                 handleClick={handleClick}
                                 apiData={data.components}
-                                ringDataRef={ringDataRef}
                                 key={ringId}
                             />
                         ))

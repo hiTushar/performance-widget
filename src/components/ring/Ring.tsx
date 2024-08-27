@@ -12,7 +12,7 @@ const RING_ITEM_SIZE = 6;
 const GAP_ANGLE = [30, 22.5, 18];
 const MAIN_ANGLE = 90;
 
-const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClick, apiData, ringDataRef }) => {
+const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClick, apiData }) => {
     const ringRef = useRef<HTMLDivElement>(null);
 
     const ringWidth = useMemo(() => {
@@ -50,7 +50,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
             totalOffset += hierarchySetOffset;
         }
 
-        if (!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+        if (!hierarchy[ringId].length && ringData.length) {
             let dataSetOffset = 0;
             if (ringId !== 'ring0') {
                 dataSetOffset += FIRST_RING_GAP;
@@ -72,7 +72,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
     }
 
     const getRingAnimation = (ringId: RingId) => {
-        if (!hierarchy[ringId].length && ringDataRef.current[ringId].length) {
+        if (!hierarchy[ringId].length && ringData.length) {
             return 'slideIn 0.5s linear 0.5s 1 forwards';
         }
         return '';
@@ -96,7 +96,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
             opacity = 1;
         }
         else {
-            if (!ringDataRef.current[ringId].length)
+            if (!ringData.length)
                 opacity = 0;
             else {
                 if (!hierarchy[ringId].length)
@@ -150,7 +150,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, ringData, hierarchy, handleClic
         }
     }
 
-    console.log({ ringId, ringData, hierarchy, ringDataRef });
+    console.log({ ringId, ringData, hierarchy });
     return (
         <div
             id={ringId}
