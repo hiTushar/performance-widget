@@ -5,8 +5,8 @@
         {
             "param_id": "health",
             "param_name": "Health Score",
-            "param_score": 0,
-            "last_week_score": 0,
+            "param_score": 12,
+            "last_week_score": 72,
             "children": [
                 "energy1",
                 "memory1",
@@ -17,8 +17,8 @@
         {
             "param_id": "usage",
             "param_name": "Usage Score",
-            "param_score": 0,
-            "last_week_score": 0,
+            "param_score": 50,
+            "last_week_score": 30,
             "children": [
                 "energy2",
                 "memory2",

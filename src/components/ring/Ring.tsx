@@ -181,7 +181,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
 
         const getVerticalBranchColor = (ringId: RingId, hierarchy: HierarchyInterface, allRingsData: { [key in RingId]: Array<RingParamUI> }) => {
             let previousHierarchyParam: String, previousHierarchyParamColor;
-            if(ringId === 'ring0') {
+            if (ringId === 'ring0') {
                 previousHierarchyParamColor = 'var(--gray-6)';
             }
             else {
@@ -190,7 +190,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
             }
 
             let currentHierarchyParam: String, currentHierarchyParamColor;
-            if(!hierarchy[ringId as RingId]) {
+            if (!hierarchy[ringId as RingId]) {
                 currentHierarchyParamColor = 'var(--gray-6)';
             }
             else {
@@ -210,8 +210,8 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         }
 
         return (
-            <div 
-                className={`ring-branches ${!hierarchy[ringId as RingId].length ? 'branch-fade-in' : ''}`} 
+            <div
+                className={`ring-branches ${!hierarchy[ringId as RingId].length ? 'branch-fade-in' : ''}`}
                 ref={branchRef}
                 style={{
                     '--branch-opacity': hierarchy[ringId as RingId].length ? '1' : '0'
@@ -241,7 +241,28 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         )
     };
 
-    console.log('ring render');
+    const getPreviousDiff = (score: number, lastWeekScore: number) => {
+        let diff = score - lastWeekScore;
+        if (diff >= 0) {
+            return `+${diff}`;
+        }
+        else {
+            return `${diff}`;
+        }
+    }
+
+    const getPreviousDiffColor = (score: number, lastWeekScore: number) => {
+        if (lastWeekScore > score) {
+            return 'var(--item-1)';
+        }
+        else if (lastWeekScore < score) {
+            return 'var(--item-3)';
+        }
+        else {
+            return 'var(--item-2)';
+        }
+    }
+
     return (
         <div
             id={ringId}
@@ -314,11 +335,26 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                                 className="ring-item__name"
                                 style={{
                                     color: getTextColor(hierarchy, ringId, data.param_id),
-                                    '--item-name-width': hierarchy[ringId] === data.param_id ? '500cqw' : '350cqw'
+                                    '--item-name-width': hierarchy[ringId] === data.param_id ? '500cqw' : '400cqw'
                                 } as React.CSSProperties}
                             >
                                 {data.param_name}
                             </div>
+                            {
+                                data.param_id === hierarchy[ringId] && (
+                                    <div className='ring-item__previous'>
+                                        <div
+                                            className='ring-item__previous__diff'
+                                            style={{
+                                                '--prev-color': getPreviousDiffColor(data.param_score, data.last_week_score)
+                                            } as React.CSSProperties}
+                                        >
+                                            {getPreviousDiff(data.param_score, data.last_week_score)}
+                                        </div>
+                                        <div className='ring-item__previous__title'>since last week</div>
+                                    </div>
+                                )
+                            }
                         </div>
                     )
                 })

@@ -7,4 +7,5 @@
   container-name: app-container;
   container-type: inline-size;
   pointer-events: none;
+  letter-spacing: 0.5px;
 }

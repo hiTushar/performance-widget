@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import _ from "lodash";
 import './Performance.css'
 import { collapseSvg, expandSvg } from "../../assets/assets";
@@ -8,7 +9,6 @@ import { ApiData, DataStatusType, HierarchyInterface, PerformanceData, RingDataR
 import ScoreRing from "../scoreRing/ScoreRing";
 import ApiManager from "../../api/ApiManager";
 import DataStatusScreen from "../dataStatus/DataStatus";
-import { useDispatch } from "react-redux";
 import { toggleModal } from "../../redux/actions/modalAction";
 
 const MAX_RINGS = 3;
