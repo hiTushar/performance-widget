@@ -157,6 +157,7 @@ const Performance = () => {
                 }}
             >
                 <div style={{
+                    opacity: 0,
                     position: 'absolute',
                     zIndex: 10,
                     top: 0,
@@ -191,7 +192,7 @@ const Performance = () => {
                         Object.keys(ringDataRef.current).map((ringId) => (
                             <Ring
                                 ringId={ringId as RingId}
-                                ringData={ringDataRef.current[ringId as RingId]}
+                                allRingsData={ringDataRef.current}
                                 hierarchy={hierarchy}
                                 handleClick={handleClick}
                                 apiData={data.components}

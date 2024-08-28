@@ -146,15 +146,34 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
+    opacity: var(--branch-opacity);
+
+    &.branch-fade-in {
+        animation: branch-fade-in 2s linear 1s 1 forwards;
+    }
+}
+
+@keyframes branch-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .ring-branches__branch {
     transform-origin: left;
-    background-color: var(--blue-1);
+    background: var(--branch-color);
     height: calc(1cqw/3);
     position: absolute;
     left: var(--branch-left);
     top: var(--branch-top);
     width: var(--branch-width);
     transform: var(--branch-transform);
+    &.dashed {
+        background-color: transparent;
+        border-top: 2px dashed var(--branch-border-color);
+    }
 }

@@ -14,34 +14,40 @@ interface PerformanceData {
 }
 
 interface RingInterface {
-    ringId: RingId, 
-    ringData: Array<RingParamUI>,
-    hierarchy: { [key in RingId]: string }, 
+    ringId: RingId,
+    allRingsData: { [key in RingId]: Array<RingParamUI> },
+    hierarchy: { [key in RingId]: string },
     handleClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => void,
-    apiData: PerformanceData[] 
+    apiData: PerformanceData[]
 }
 
 interface ScoreRingInterface {
-    score: number, 
-    lastWeekScore: number, 
+    score: number,
+    lastWeekScore: number,
     hierarchy: { [key in RingId]: string }
 }
 
 type RingId = 'ring0' | 'ring1' | 'ring2';
 
-type DataStatusType = 'LOADING' | 'OK' | 'EMPTY' |'ERROR';
+type DataStatusType = 'LOADING' | 'OK' | 'EMPTY' | 'ERROR';
 
 type HierarchyInterface = {
     [key in RingId]: string;
 }
 
 type RingParamUI = {
-    param_id: String, 
-    param_color: String 
+    param_id: String,
+    param_color: String
 }
 
 type RingDataRef = {
     [key in RingId]: Array<RingParamUI>;
 }
 
-export type { ApiData,PerformanceData, RingInterface, RingId, ScoreRingInterface, DataStatusType, HierarchyInterface, RingDataRef, RingParamUI };
+type BranchInterface = {
+    ringId: RingId,
+    hierarchy: { [key in RingId]: string },
+    allRingsData: { [key in RingId]: Array<RingParamUI> }
+}
+
+export type { ApiData, PerformanceData, RingInterface, RingId, ScoreRingInterface, DataStatusType, HierarchyInterface, RingDataRef, RingParamUI, BranchInterface };
