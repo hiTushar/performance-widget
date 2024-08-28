@@ -43,7 +43,7 @@
     container-type: inline-size;
 
     &.popup {
-        animation: popup 1s linear 1.5s 1 forwards;
+        animation: popup 0.5s linear 1.5s 1 forwards;
     }
 
     @container app-container (min-width: 1px) {
@@ -103,19 +103,19 @@
     text-align: center;
     font-weight: 300;
     opacity: 0;
-    animation: slideInName 1s linear 3s 1 forwards;
+    animation: slideInName 1s linear 1.5s 1 forwards;
 
     @container ring-item-container (min-width: 1px) {
-        font-size: 35cqw;
+        font-size: max(35cqw, 12px);
         top: 200cqw;
-        width: 280cqw;
+        width: var(--item-name-width);
     }
 }
 
 @keyframes slideInName {
     0% {
         opacity: 0;
-        top: 200cqw;
+        top: 300cqw;
     }
 
     50% {
@@ -138,7 +138,7 @@
     text-align: center;
 
     @container ring-item-container (min-width: 1px) {
-        font-size: 30cqw;
+        font-size: max(30cqw, 10px);
     }
 }
 

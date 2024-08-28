@@ -313,8 +313,9 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                             <div
                                 className="ring-item__name"
                                 style={{
-                                    color: getTextColor(hierarchy, ringId, data.param_id)
-                                }}
+                                    color: getTextColor(hierarchy, ringId, data.param_id),
+                                    '--item-name-width': hierarchy[ringId] === data.param_id ? '500cqw' : '350cqw'
+                                } as React.CSSProperties}
                             >
                                 {data.param_name}
                             </div>

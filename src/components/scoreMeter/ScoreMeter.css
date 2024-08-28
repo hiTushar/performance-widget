@@ -18,7 +18,7 @@
     font-weight: bold;
 
     @container performance-container (min-width: 1px) {
-        font-size: 5cqw;
+        font-size: max(5cqw, 20px);
     }
     
     & > span {

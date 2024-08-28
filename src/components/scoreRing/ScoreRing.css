@@ -76,17 +76,17 @@
     color: var(--white);
 
     @container performance-container (min-width: 1px) {
-        font-size: 2cqw;
+        font-size: max(2cqw, 12px);
         line-height: 1;
     }
 }
 
 .text__i {
     display: flex;
+    aspect-ratio: 1;
 
     @container performance-container (min-width: 1px) {
-        width: 2cqw;
-        height: 2cqw;
+        width: max(2cqw, 12px);
     }
 
     &>img {
@@ -109,13 +109,13 @@
 .previous__diff {
     color: var(--prev-color);
     @container performance-container (min-width: 1px) {
-        font-size: 1.8cqw;
+        font-size: max(1.8cqw, 12px);
     }
 }
 
 .previous__title {
     color: var(--white);
     @container performance-container (min-width: 1px) {
-        font-size: 1.8cqw;
+        font-size: max(1.8cqw, 12px);
     }
 }
