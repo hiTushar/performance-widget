@@ -59,11 +59,11 @@ const Performance = () => {
     }, [])
 
 
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => {
-        console.log(e);
+    const handleClick = (data: PerformanceData, ringId: RingId) => {
+        // console.log(e);
         let hierarchyObj;
         if (expand !== true) {
-            setExpand(true);
+            // setExpand(true);
         }
         else {
             setHierarchy(prev => {
@@ -74,6 +74,11 @@ const Performance = () => {
                 }
                 return hierarchyObj;
             })
+
+            if(hierarchy.ring2) {
+                const event = new CustomEvent('openSidepanel', { detail: { sidePanel: true, hierarchy: hierarchy } });
+                document.dispatchEvent(event);
+            }
         }
     }
 
@@ -95,7 +100,7 @@ const Performance = () => {
         // document.querySelector<HTMLElement>('.performance__expand')!.style.display = 'none';
         expandRef.current!.style.display = 'none';
 
-        let event = new CustomEvent('expand', { detail: { expand: !expandParam } });
+        let event = new CustomEvent('expandWidget', { detail: { expand: !expandParam } });
         document.dispatchEvent(event);
 
         if (expandParam) {
@@ -187,6 +192,7 @@ const Performance = () => {
                         score={scoreRef.current.score}
                         lastWeekScore={scoreRef.current.last_week_score}
                         hierarchy={hierarchy}
+                        expand={expand}
                     />
                     {
                         Object.keys(ringDataRef.current).map((ringId) => (
@@ -196,6 +202,7 @@ const Performance = () => {
                                 hierarchy={hierarchy}
                                 handleClick={handleClick}
                                 apiData={data.components}
+                                expand={expand}
                                 key={ringId}
                             />
                         ))

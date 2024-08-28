@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import _ from 'lodash';
 import './Ring.css';
 import { BranchInterface, HierarchyInterface, PerformanceData, RingId, RingInterface, RingParamUI } from '../../types/Types';
-import { getDistance, inRadians } from '../../utils/Utils';
+import { getDistance, inRadians, rotateArray } from '../../utils/Utils';
 
 const MAX_RINGS = 3;
 const RING_GAP = 19;
@@ -13,7 +13,7 @@ const ITEM_GAP_ANGLE = [30, 22.5, 18];
 const BRANCH_GAP_ANGLE = [70, 68, 66];
 const MAIN_ANGLE = 90;
 
-const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handleClick, apiData }) => {
+const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handleClick, apiData, expand }) => {
     const ringRef = useRef<HTMLDivElement>(null);
     const branchRef = useRef<HTMLDivElement>(null);
 
@@ -24,20 +24,13 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
     const anglePosArray = useMemo(() => {
         let ringData = allRingsData[ringId as RingId];
         let centerIndex = Math.floor(ringData.length / 2);
-        let anglePosArray = ringData.map((_, index) => MAIN_ANGLE - ITEM_GAP_ANGLE[+ringId.slice(-1)] * (index - centerIndex));
+        let tempAnglePosArray = ringData.map((_, index) => MAIN_ANGLE - ITEM_GAP_ANGLE[+ringId.slice(-1)] * (index - centerIndex));
         if (hierarchy[ringId].length) {
             let selectedScoreIndex = _.findIndex(ringData, (param) => param.param_id === hierarchy[ringId]);
-
-
-            let indexDiff = selectedScoreIndex - centerIndex;
-            if (indexDiff < 0) {
-
-            }
-            let temp = anglePosArray[centerIndex];
-            anglePosArray[centerIndex] = anglePosArray[selectedScoreIndex];
-            anglePosArray[selectedScoreIndex] = temp;
+            let indexDiff = centerIndex - selectedScoreIndex;
+            tempAnglePosArray = rotateArray(tempAnglePosArray, indexDiff);
         }
-        return anglePosArray;
+        return tempAnglePosArray;
     }, [hierarchy]);
 
     const getTopOffset = (ringId: RingId) => {
@@ -111,11 +104,11 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         return opacity;
     }
 
-    const scoreClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => {
+    const scoreClick = (data: PerformanceData, ringId: RingId) => {
         // let angle = e.currentTarget.dataset.angle;
         // let centerAngle = MAIN_ANGLE;
         // rotationAngleRef.current = centerAngle - +angle;
-        handleClick(e, data, ringId)
+        handleClick(data, ringId)
     }
 
     const getItemAnimation = (paramId: String, selectedParamId: string) => {
@@ -274,7 +267,8 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                 '--slide-in-offset': `${getSlideInOffset(ringId)}cqw`,
                 width: `${ringWidth}cqw`,
                 opacity: getOpacity(ringId),
-                borderColor: getBorderColor(hierarchy, ringId, allRingsData)
+                borderColor: getBorderColor(hierarchy, ringId, allRingsData),
+                '--ring-base-color': `var(--ring-${ringId.slice(-1)})`
             } as React.CSSProperties}
             ref={ringRef}
         >
@@ -317,9 +311,10 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                                 left: getXPosition(index),
                                 top: getYPosition(index),
                                 '--item-color': param_ring.param_color,
-                                animation: getItemAnimation(param_ring.param_id, hierarchy[ringId])
+                                animation: getItemAnimation(param_ring.param_id, hierarchy[ringId]),
+                                cursor: expand ? 'pointer' : 'default'
                             } as React.CSSProperties}
-                            onClick={(e) => scoreClick(e, data, ringId)}
+                            onClick={() => scoreClick(data, ringId)}
                             key={`${ringId}-${param_ring.param_id}`}
                             data-angle={anglePosArray[index]}
                         >
@@ -334,8 +329,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                             <div
                                 className="ring-item__name"
                                 style={{
-                                    color: getTextColor(hierarchy, ringId, data.param_id),
-                                    '--item-name-width': hierarchy[ringId] === data.param_id ? '500cqw' : '400cqw'
+                                    color: getTextColor(hierarchy, ringId, data.param_id)
                                 } as React.CSSProperties}
                             >
                                 {data.param_name}

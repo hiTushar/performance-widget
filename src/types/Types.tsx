@@ -17,14 +17,16 @@ interface RingInterface {
     ringId: RingId,
     allRingsData: { [key in RingId]: Array<RingParamUI> },
     hierarchy: { [key in RingId]: string },
-    handleClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: PerformanceData, ringId: RingId) => void,
-    apiData: PerformanceData[]
+    handleClick: (data: PerformanceData, ringId: RingId) => void,
+    apiData: PerformanceData[],
+    expand: boolean | null
 }
 
 interface ScoreRingInterface {
     score: number,
     lastWeekScore: number,
-    hierarchy: { [key in RingId]: string }
+    hierarchy: { [key in RingId]: string },
+    expand: boolean | null
 }
 
 type RingId = 'ring0' | 'ring1' | 'ring2';

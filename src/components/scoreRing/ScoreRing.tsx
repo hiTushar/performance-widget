@@ -7,8 +7,8 @@ const SCORE_RING_WIDTH = 95;
 const SLIDE_IN_SCORE_RING_OFFSET = 28;
 
 
-const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekScore }) => {
-    // console.log({hierarchy, expand});
+const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekScore, expand }) => {
+    
     const getTopOffset = () => {
         let totalOffset = 0;
 
@@ -90,7 +90,13 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
             } as React.CSSProperties}
         >
             <div className='score-ring-dotted-bg'></div>
-            <div className='score-ring__info'>
+            <div 
+                className='score-ring__info'
+                style={{
+                    transform: expand === null ? 'translate(-50%, -120%)' : '',
+                    animation: expand ? 'move-up-score-info 2s cubic-bezier(0.97, 0, 0.82, 0.36) 0s 1 forwards' : expand === false ? 'move-down-score-info 1s linear 0s 1 forwards' : ''
+                }}
+            >
                 <div className='score-ring__meter'>
                     <ScoreMeter score={score} />
                 </div>

@@ -8,5 +8,8 @@
 
 4. add `<div id="performance-widget"></div>` to the markup where you want the widget - the main container '.widget-app' is absolutely positioned with z-index 10 and should be over rest of the components.  
 
-5. add event listeners for the custom event 'expand' which returns `{ detail: { expand: true  }}` and `{ detail: { expand: false  }}` and can be used to trigger other events as the performance widget is expands or collapses.  
+5. add event listeners for the custom event 'expandWidget' which returns `event.detail = { expandWidget: true }` when the widget expand button is clicked and `{ detail: { expandWidget: false }}` when the widget collapse button is clicked.   
+This can be used to trigger other events as the performance widget expands or collapses.  
 
+6. add event listeners for the custom event 'openSidepanel' which returns `event.detail = { sidePanel: true, hierarchy: { ring0: 'score0', ring1: 'score1', ring2: 'score2' } }` (where score0 is the `param_id` of the score clicked in the first ring and so on) when the a score parameter in the third/last tier/ring is clicked.   
+This can be used to trigger other events.

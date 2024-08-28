@@ -50,12 +50,31 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translate(-50%, -120%);
     display: flex;
     flex-direction: column;
     align-items: center;
     @container performance-container (min-width: 1px) {
         gap: 1cqw;
+    }
+}
+
+@keyframes move-up-score-info {
+    0% {
+        transform: translate(-50%, -120%);
+    }
+
+    100% {
+        transform: translate(-50%, -125%);
+    }
+}
+
+@keyframes move-down-score-info {
+    0% {
+        transform: translate(-50%, -125%);
+    }
+
+    100% {
+        transform: translate(-50%, -120%);
     }
 }
 
