@@ -93,8 +93,8 @@ const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekSco
             <div 
                 className='score-ring__info'
                 style={{
-                    transform: expand === null ? 'translate(-50%, -120%)' : '',
-                    animation: expand ? 'move-up-score-info 2s cubic-bezier(0.97, 0, 0.82, 0.36) 0s 1 forwards' : expand === false ? 'move-down-score-info 1s linear 0s 1 forwards' : ''
+                    // transform: expand === null ? 'translate(-50%, -120%)' : '',
+                    // animation: expand ? 'move-up-score-info 2s cubic-bezier(0.97, 0, 0.82, 0.36) 0s 1 forwards' : expand === false ? 'move-down-score-info 1s linear 0s 1 forwards' : ''
                 }}
             >
                 <div className='score-ring__meter'>
