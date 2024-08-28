@@ -10,6 +10,7 @@ import ScoreRing from "../scoreRing/ScoreRing";
 import ApiManager from "../../api/ApiManager";
 import DataStatusScreen from "../dataStatus/DataStatus";
 import { toggleModal } from "../../redux/actions/modalAction";
+import generateEvent from "../../events/Events";
 
 const MAX_RINGS = 3;
 
@@ -72,13 +73,12 @@ const Performance = () => {
                 for (let i = +ringId.slice(-1) + 1; i < MAX_RINGS; i++) {
                     hierarchyObj[`ring${i}` as RingId] = '';
                 }
+                if (ringId === 'ring2') {
+                    generateEvent('openSidepanel', { sidePanel: true, hierarchy: hierarchyObj });
+                }
                 return hierarchyObj;
             })
 
-            if(hierarchy.ring2) {
-                const event = new CustomEvent('openSidepanel', { detail: { sidePanel: true, hierarchy: hierarchy } });
-                document.dispatchEvent(event);
-            }
         }
     }
 
@@ -99,10 +99,6 @@ const Performance = () => {
     const expandWidget = (expandParam: boolean | null) => {
         // document.querySelector<HTMLElement>('.performance__expand')!.style.display = 'none';
         expandRef.current!.style.display = 'none';
-
-        let event = new CustomEvent('expandWidget', { detail: { expand: !expandParam } });
-        document.dispatchEvent(event);
-
         if (expandParam) {
             setHierarchy({
                 ring0: '',
@@ -118,7 +114,7 @@ const Performance = () => {
             // };
         }
         setExpand(expandParam => !expandParam);
-        // eventEmitter.emit('expand', !prev);
+        generateEvent('expandWidget', { expand: !expandParam });
     }
 
     if (!hierarchy.ring0) {
@@ -156,7 +152,7 @@ const Performance = () => {
                 }}
                 onAnimationEnd={() => {
                     expandRef.current!.style.display = 'block'
-                    if(expand) {
+                    if (expand) {
                         document.querySelector<HTMLElement>('.performance__modal-button')!.style.display = 'block';
                     }
                 }}
@@ -211,7 +207,7 @@ const Performance = () => {
                 <div className='performance__inspect'></div>
                 {
                     expand && (
-                        <div 
+                        <div
                             className='performance__modal-button'
                             onClick={() => dispatch(toggleModal(true))}
                         >
