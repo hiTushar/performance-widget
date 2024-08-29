@@ -7,7 +7,7 @@ const SCORE_RING_WIDTH = 95;
 const SLIDE_IN_SCORE_RING_OFFSET = 28;
 
 
-const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekScore, expand }) => {
+const ScoreRing: React.FC<ScoreRingInterface> = ({ hierarchy, score, lastWeekScore }) => {
     
     const getTopOffset = () => {
         let totalOffset = 0;

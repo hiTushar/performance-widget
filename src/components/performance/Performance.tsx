@@ -61,7 +61,7 @@ const Performance = () => {
 
 
     const handleClick = (data: PerformanceData, ringId: RingId) => {
-        // console.log(e);
+        if(data.param_score === 'NA') return;
         let hierarchyObj;
         if (expand !== true) {
             // setExpand(true);

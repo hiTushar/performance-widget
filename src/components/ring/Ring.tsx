@@ -234,7 +234,8 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         )
     };
 
-    const getPreviousDiff = (score: number, lastWeekScore: number) => {
+    const getPreviousDiff = (score: number | 'NA', lastWeekScore: number) => {
+        if(score === 'NA') return;
         let diff = score - lastWeekScore;
         if (diff >= 0) {
             return `+${diff}`;
@@ -244,7 +245,8 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         }
     }
 
-    const getPreviousDiffColor = (score: number, lastWeekScore: number) => {
+    const getPreviousDiffColor = (score: number | 'NA', lastWeekScore: number) => {
+        if(score === 'NA') return;
         if (lastWeekScore > score) {
             return 'var(--item-1)';
         }
@@ -312,7 +314,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                                 top: getYPosition(index),
                                 '--item-color': param_ring.param_color,
                                 animation: getItemAnimation(param_ring.param_id, hierarchy[ringId]),
-                                cursor: expand ? 'pointer' : 'default'
+                                cursor: expand && data.param_score !== 'NA' ? 'pointer' : 'default'
                             } as React.CSSProperties}
                             onClick={() => scoreClick(data, ringId)}
                             key={`${ringId}-${param_ring.param_id}`}

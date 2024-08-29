@@ -7,7 +7,7 @@ interface ApiData {
 interface PerformanceData {
     param_id: string;
     param_name: string;
-    param_score: number;
+    param_score: number | 'NA';
     last_week_score: number;
     children: Array<string>;
     primary: boolean;

@@ -77,7 +77,7 @@
         {
             "param_id": "energy2",
             "param_name": "Energy Score2",
-            "param_score": 0,
+            "param_score": "NA",
             "last_week_score": 0,
             "children": [
                 "internet21",
