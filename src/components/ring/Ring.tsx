@@ -16,6 +16,9 @@ const MAIN_ANGLE = 90;
 const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handleClick, apiData, expand }) => {
     const ringRef = useRef<HTMLDivElement>(null);
     const branchRef = useRef<HTMLDivElement>(null);
+    const subRingRef = useRef<Array<HTMLDivElement>>([]);
+    const ringItemContainerRef = useRef<Array<HTMLDivElement>>([]);
+    const ringItemRef = useRef<Array<HTMLDivElement>>([]);
 
     const ringWidth = useMemo(() => {
         return RING_WIDTH + 2 * +ringId.slice(-1) * RING_GAP;
@@ -30,6 +33,13 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
             let indexDiff = centerIndex - selectedScoreIndex;
             tempAnglePosArray = rotateArray(tempAnglePosArray, indexDiff);
         }
+
+        // ringItemContainerRef.current.forEach(ringItemContainer => {
+        //     ringItemContainer.style.transition = 'none';
+        //     ringItemContainer.style.transform = `rotate(0deg)`;
+        // })
+
+        // console.log({ tempAnglePosArray })
         return tempAnglePosArray;
     }, [hierarchy]);
 
@@ -104,11 +114,53 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         return opacity;
     }
 
-    const scoreClick = (data: PerformanceData, ringId: RingId) => {
-        // let angle = e.currentTarget.dataset.angle;
-        // let centerAngle = MAIN_ANGLE;
-        // rotationAngleRef.current = centerAngle - +angle;
-        handleClick(data, ringId)
+    const scoreClick = (data: PerformanceData, ringId: RingId, angleClicked: number) => {
+        if(!expand || data.param_score === 'NA') return;
+        let relativeDiff = (MAIN_ANGLE - angleClicked) / ITEM_GAP_ANGLE[+ringId.slice(-1)];
+
+
+        let newAngleArray = anglePosArray.map(angle => angle + relativeDiff * ITEM_GAP_ANGLE[+ringId.slice(-1)]);
+        // let newAngleArray = anglePosArray;
+        let maxAngleVisible = Math.max(...anglePosArray);
+        let minAngleVisible = Math.min(...anglePosArray);
+
+        newAngleArray = newAngleArray.map(angle => {
+            if (angle > maxAngleVisible) {
+                return 360 + minAngleVisible;
+            }
+            else if (angle < minAngleVisible) {
+                return -(180 + minAngleVisible);
+            }
+            else {
+                return angle;
+            }
+        })
+
+        let relativeRotationAngleArray = newAngleArray.map((angle, index) => angle - anglePosArray[index]);
+
+        console.log({ relativeRotationAngleArray })
+        subRingRef.current.forEach((subRing, index) => {
+            subRing.style.transition = 'transform 2s ease-in-out';
+            subRing.style.transform = `rotate(${relativeRotationAngleArray[index]}deg)`;
+        })
+
+        ringItemContainerRef.current.forEach((ringItemContainer, index) => {
+            ringItemContainer.style.transition = 'transform 2s ease-in-out';
+            ringItemContainer.style.transform = `rotate(${-relativeRotationAngleArray[index]}deg)`;
+        })
+
+        setTimeout(() => {
+            handleClick(data, ringId);
+            subRingRef.current.forEach(subRing => {
+                subRing.style.transition = 'none';
+                subRing.style.transform = 'rotate(0deg)';
+            })
+
+            ringItemContainerRef.current.forEach(ringItemContainer => {
+                ringItemContainer.style.transition = 'none';
+                ringItemContainer.style.transform = 'rotate(0deg)';
+            })
+        }, 2000)
     }
 
     const getItemAnimation = (paramId: String, selectedParamId: string) => {
@@ -258,6 +310,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         }
     }
 
+    console.log('render ring');
     return (
         <div
             id={ringId}
@@ -275,7 +328,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
             ref={ringRef}
         >
             <Branches ringId={ringId} hierarchy={hierarchy} allRingsData={allRingsData} />
-            <div style={{
+            {/* <div style={{
                 opacity: 0,
                 position: 'absolute',
                 zIndex: 10,
@@ -300,57 +353,69 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                 <div style={{
                     border: 'solid 1px yellow'
                 }}></div>
-            </div>
+            </div> */}
             {
                 allRingsData[ringId as RingId].map((param_ring: { param_id: String, param_color: String }, index: number) => {
                     let data: PerformanceData = apiData.find((param: PerformanceData) => param.param_id === param_ring.param_id)!;
                     return (
                         <div
-                            className={`ring-item ${!hierarchy[ringId].length ? 'popup' : ''}`} // don't animate if a param (hierarchy) from this ring has already been selected
-                            style={{
-                                '--scale': `${!hierarchy[ringId].length ? 0 : 1}`,
-                                // transform: `scale(${!hierarchy[ringId].length ? 0 : 1})`,
-                                left: getXPosition(index),
-                                top: getYPosition(index),
-                                '--item-color': param_ring.param_color,
-                                animation: getItemAnimation(param_ring.param_id, hierarchy[ringId]),
-                                cursor: expand && data.param_score !== 'NA' ? 'pointer' : 'default'
-                            } as React.CSSProperties}
-                            onClick={() => scoreClick(data, ringId)}
-                            key={`${ringId}-${param_ring.param_id}`}
-                            data-angle={anglePosArray[index]}
+                            className='ring-item__sub-ring'
+                            key={`${ringId}-${data.param_id}`}
+                            ref={element => subRingRef.current[index] = element!}
                         >
-                            <div
-                                className="ring-item__score"
+                            <div 
+                                className='ring-item__container'
                                 style={{
-                                    color: getTextColor(hierarchy, ringId, data.param_id)
+                                    left: getXPosition(index),
+                                    top: getYPosition(index)
                                 }}
+                                ref={element => ringItemContainerRef.current[index] = element!}
                             >
-                                {data.param_score}
-                            </div>
-                            <div
-                                className="ring-item__name"
-                                style={{
-                                    color: getTextColor(hierarchy, ringId, data.param_id)
-                                } as React.CSSProperties}
-                            >
-                                {data.param_name}
-                            </div>
-                            {
-                                data.param_id === hierarchy[ringId] && (
-                                    <div className='ring-item__previous'>
-                                        <div
-                                            className='ring-item__previous__diff'
-                                            style={{
-                                                '--prev-color': getPreviousDiffColor(data.param_score, data.last_week_score)
-                                            } as React.CSSProperties}
-                                        >
-                                            {getPreviousDiff(data.param_score, data.last_week_score)}
-                                        </div>
-                                        <div className='ring-item__previous__title'>since last week</div>
+                                <div
+                                    className={`ring-item ${!hierarchy[ringId].length ? 'popup' : ''}`} // don't animate if a param (hierarchy) from this ring has already been selected
+                                    style={{
+                                        '--scale': `${!hierarchy[ringId].length ? 0 : 1}`,
+                                        '--item-color': param_ring.param_color,
+                                        animation: getItemAnimation(param_ring.param_id, hierarchy[ringId]),
+                                        cursor: expand && data.param_score !== 'NA' ? 'pointer' : 'default'
+                                    } as React.CSSProperties}
+                                    onClick={() => scoreClick(data, ringId, anglePosArray[index])}
+                                    key={`${ringId}-${param_ring.param_id}`}
+                                    ref={element => ringItemRef.current[index] = element!}
+                                >
+                                    <div
+                                        className="ring-item__score"
+                                        style={{
+                                            color: getTextColor(hierarchy, ringId, data.param_id)
+                                        }}
+                                    >
+                                        {data.param_score}
                                     </div>
-                                )
-                            }
+                                    <div
+                                        className="ring-item__name"
+                                        style={{
+                                            color: getTextColor(hierarchy, ringId, data.param_id)
+                                        } as React.CSSProperties}
+                                    >
+                                        {data.param_name}
+                                    </div>
+                                    {
+                                        data.param_id === hierarchy[ringId] && (
+                                            <div className='ring-item__previous'>
+                                                <div
+                                                    className='ring-item__previous__diff'
+                                                    style={{
+                                                        '--prev-color': getPreviousDiffColor(data.param_score, data.last_week_score)
+                                                    } as React.CSSProperties}
+                                                >
+                                                    {getPreviousDiff(data.param_score, data.last_week_score)}
+                                                </div>
+                                                <div className='ring-item__previous__title'>since last week</div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </div>
                         </div>
                     )
                 })
