@@ -160,7 +160,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
                 ringItemContainer.style.transition = 'none';
                 ringItemContainer.style.transform = 'rotate(0deg)';
             })
-        }, 2000)
+        }, 1900) // happens a tad bit before the transition ends to avoid a flicker
     }
 
     const getItemAnimation = (paramId: String, selectedParamId: string) => {
