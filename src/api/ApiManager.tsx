@@ -16,7 +16,7 @@ class ApiManager {
                 console.log('Fetching overview data...');
                 setTimeout(() => {
                     console.log('Data fetched!');
-                    resolve(performanceData);
+                    resolve(performanceData as ApiData);
                 }, 1500)
             })
         }
