@@ -138,7 +138,7 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
 
         let relativeRotationAngleArray = newAngleArray.map((angle, index) => angle - anglePosArray[index]);
 
-        console.log({ relativeRotationAngleArray })
+        // console.log({ relativeRotationAngleArray })
         subRingRef.current.forEach((subRing, index) => {
             subRing.style.transition = 'transform 2s ease-in-out';
             subRing.style.transform = `rotate(${relativeRotationAngleArray[index]}deg)`;
@@ -310,7 +310,6 @@ const Ring: React.FC<RingInterface> = ({ ringId, allRingsData, hierarchy, handle
         }
     }
 
-    console.log('render ring');
     return (
         <div
             id={ringId}
